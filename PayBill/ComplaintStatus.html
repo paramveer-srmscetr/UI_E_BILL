@@ -22,15 +22,12 @@
       padding: 10px;
       text-align: left;
     }
-    /* .topbar {
-      padding: 10px;
-      background: #eee;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    } */
     .menu a {
       margin-right: 15px;
+    }
+    button {
+      padding: 5px 10px;
+      margin-right: 5px;
     }
   </style>
 </head>
@@ -40,17 +37,15 @@
   <div class="topbar">
     <div class="menu">
       <a href="#" onclick="goHome()">Home</a>
-      <a href="/PayBill/PayBill.html" onclick="showPayBill()">Pay Bill</a>
-      <a href="/PayBill/RegisterComplaint.html" onclick="showRegisterComplaint()">Register Complaint</a>
-      <a href="/PayBill/ComplaintStatus.html" onclick="showComplaintStatus()">Complaint Status</a>
+      <a href="/PayBill/PayBill.html">Pay Bill</a>
+      <a href="/PayBill/RegisterComplaint.html">Register Complaint</a>
+      <a href="/PayBill/ComplaintStatus.html">Complaint Status</a>
     </div>
     <div class="right">
-Welcome <span id="username"></span>
+      Welcome <span id="username"></span>
       <button onclick="logout()">Logout</button>
     </div>
   </div>
-
-
 
   <div class="container">
     <h2>Complaint Status</h2>
@@ -63,6 +58,7 @@ Welcome <span id="username"></span>
           <th>Consumer No</th>
           <th>Mobile</th>
           <th>Status</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -71,50 +67,81 @@ Welcome <span id="username"></span>
     </table>
   </div>
 
-  <!-- JavaScript -->
   <script>
     function logout() {
-      alert("Logging out...");
+      localStorage.removeItem("loggedInUser");
       window.location.href = "/Customer_Registration/Login.html";
     }
 
-    // Load complaints from localStorage
-    function loadComplaints() {
+    function goHome() {
+      window.location.href = "/PayBill/Home.html";
+    }
+
+    // Load and render complaints
+    function renderComplaints() {
       const complaints = JSON.parse(localStorage.getItem("complaints") || "[]");
       const tableBody = document.getElementById("complaint-table").querySelector("tbody");
+      tableBody.innerHTML = ""; // Clear existing
 
       if (complaints.length === 0) {
         const row = document.createElement("tr");
-        const td = document.createElement("td");
-        td.colSpan = 6;
-        td.textContent = "No complaints found.";
-        row.appendChild(td);
+        row.innerHTML = `<td colspan="7">No complaints found.</td>`;
         tableBody.appendChild(row);
         return;
       }
 
-      complaints.forEach(comp => {
-        const row = document.createElement("tr");
+      complaints.forEach((comp, index) => {
+        // Default values
+        if (!comp.status) comp.status = "In Progress";
+        if (!comp.createdAt) comp.createdAt = Date.now();
 
+        // Auto-update after 5 minutes
+        const fiveMinutes = 5 * 60 * 1000;
+        const now = Date.now();
+        if (now - comp.createdAt >= fiveMinutes) {
+          comp.status = "Registered";
+        }
+
+        const row = document.createElement("tr");
         row.innerHTML = `
           <td>${comp.id}</td>
           <td>${comp.type}</td>
           <td>${comp.category}</td>
           <td>${comp.consumer}</td>
           <td>${comp.mobile}</td>
-          <td>Registered</td>
+          <td>${comp.status}</td>
+          <td>
+            <button onclick="deleteComplaint(${index})">Delete</button>
+          </td>
         `;
 
         tableBody.appendChild(row);
       });
+
+      // Save updated status
+      localStorage.setItem("complaints", JSON.stringify(complaints));
     }
 
-    document.addEventListener("DOMContentLoaded", loadComplaints);
+    function deleteComplaint(index) {
+      const complaints = JSON.parse(localStorage.getItem("complaints") || "[]");
+      if (confirm("Are you sure you want to delete this complaint?")) {
+        complaints.splice(index, 1);
+        localStorage.setItem("complaints", JSON.stringify(complaints));
+        renderComplaints();
+      }
+    }
+
+    
+
+    // Set username on top bar
     document.addEventListener("DOMContentLoaded", () => {
-const user = localStorage.getItem("loggedInUser") || "Guest";
-const nameEl = document.getElementById("username");
-if (nameEl) nameEl.textContent = user;
-});
+      const user = localStorage.getItem("loggedInUser") || "Guest";
+      document.getElementById("username").textContent = user;
+      renderComplaints();
+
+      // Optional: auto-refresh every minute
+      setInterval(renderComplaints, 60000);
+    });
   </script>
 
 </body>
