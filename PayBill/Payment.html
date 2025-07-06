@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Payment Page</title>
+  <link rel="stylesheet" href="/PayBill/Bill.css" />
+</head>
+<body>
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="menu">
+      <a href="/PayBill/Home.html">Home</a>
+      <a href="/PayBill/PayBill.html">Pay Bill</a>
+      <a href="/PayBill/RegisterComplaint.html">Register Complaint</a>
+      <a href="/PayBill/ComplaintStatus.html">Complaint Status</a>
+    </div>
+    <div class="right">
+Welcome <span id="username"></span>
+      <button onclick="window.location.href='/Customer_Registration/Login.html'">Logout</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Payment Section -->
+    <div id="payment-section" class="section">
+      <h2>Payment Summary</h2>
+      <p>Bill Amount: ₹<span id="bill-amount">0</span></p>
+      <p>PG Charges: ₹100</p>
+      <p><strong>Total Payable: ₹<span id="total-payable">0</span></strong></p>
+
+      <label>Mode of Payment:</label>
+      <select>
+        <option>Credit Card</option>
+        <option>Debit Card</option>
+      </select><br><br>
+
+      <button onclick="showCardForm()">Pay Now</button>
+      <button onclick="window.location.href='/PayBill/Home.html'">Back to Home</button>
+    </div>
+
+    <!-- Card Section -->
+    <div id="card-section" class="section" style="display:none;">
+      <h2>Enter Card Details</h2>
+
+      <label>Card Number:</label><br>
+      <input type="number" id="card-no" minlength="16" required><br><br>
+
+      <label>Card Holder Name:</label><br>
+      <input type="text" id="card-name" minlength="10" required><br><br>
+
+      <label>Expiry Date (MM/YY):</label><br>
+      <input type="text" id="expiry" placeholder="MM/YY" required><br><br>
+
+      <label>CVV:</label><br>
+      <input type="number" id="cvv" minlength="3" required><br><br>
+
+      <button onclick="makePayment()">Make Payment</button>
+    </div>
+
+    <!-- Confirmation Section -->
+    <div id="confirmation-section" class="section" style="display:none;">
+      <h2>Payment Successful!</h2>
+      <p>Transaction ID: <span id="txn-id"></span></p>
+      <p>Total Paid: ₹<span id="paid-amount"></span></p>
+      <p><strong>Final Amount: ₹<span id="final-amount">0</span></strong></p>
+      <button onclick="downloadReceipt()">Download Receipt</button>
+    </div>
+  </div>
+
+  <!-- Include JavaScript -->
+  <script src="/PayBill/Bill.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", loadPaymentPage);
+  </script>
+
+</body>
+</html>

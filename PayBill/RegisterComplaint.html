@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register Complaint</title>
+  <link rel="stylesheet" href="/PayBill/Bill.css">
+  <style>
+    .container {
+      width: 80%;
+      margin: auto;
+      padding: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+    }
+    .buttons {
+      margin-top: 15px;
+    }
+    .buttons button {
+      padding: 10px 20px;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="menu">
+      <a href="/PayBill/Home.html">Home</a>
+      <a href="/PayBill/PayBill.html">Pay Bill</a>
+      <a href="#">Register Complaint</a>
+      <a href="/PayBill/ComplaintStatus.html">Complaint Status</a>
+    </div>
+     <div class="right">
+Welcome <span id="username"></span>
+      <button onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <!-- Complaint Form -->
+  <div class="container">
+    <h2>Register Complaint / Service</h2>
+
+    <form id="complaint-form">
+      <label for="type">Complaint/Service Type:</label>
+      <select id="type" required onchange="updateCategories()">
+        <option value="">-- Select Type --</option>
+        <option value="Billing">Billing related</option>
+        <option value="Voltage">Voltage related</option>
+        <option value="Disruption">Frequent disruption</option>
+        <option value="Street Light">Street light related</option>
+        <option value="Pole">Pole related</option>
+      </select>
+
+      <label for="category">Category:</label>
+      <select id="category" required>
+        <option value="">-- Select Category --</option>
+      </select>
+
+      <label for="contact">Contact Person:</label>
+      <input type="text" id="contact" required>
+
+      <label for="landmark">Landmark:</label>
+      <input type="text" id="landmark" required>
+
+      <label for="consumer">Consumer No (13 digits):</label>
+      <input type="text" id="consumer" maxlength="13" pattern="\d{13}" required>
+
+      <label for="description">Problem Description:</label>
+      <textarea id="description" required></textarea>
+
+      <label for="mobile">Mobile Number (10 digits):</label>
+      <input type="text" id="mobile" maxlength="10" pattern="\d{10}" required>
+
+      <label for="address">Address:</label>
+      <textarea id="address" required></textarea>
+
+      <div class="buttons">
+        <button type="button" onclick="submitComplaint()">Submit Complaint</button>
+        <button type="reset" onclick="window.location.reload()">Cancel</button>
+      </div>
+    </form>
+
+    <div id="success-message" style="display:none; margin-top: 20px;">
+      <h3>Complaint registered successfully!</h3>
+      <p>Your Complaint ID is: <strong id="complaint-id"></strong></p>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    function logout() {
+      localStorage.removeItem("loggedInUser");
+      window.location.href = "/Customer_Registration/Login.html";
+    }
+
+    const categoryMap = {
+      Billing: ["Incorrect Bill", "Bill Not Received", "Meter Reading Issue"],
+      Voltage: ["Low Voltage", "High Voltage", "Voltage Fluctuation"],
+      Disruption: ["Frequent Power Cuts", "Unexpected Outages"],
+      "Street Light": ["Light Not Working", "Light Flickering", "Light Always On"],
+      Pole: ["Damaged Pole", "Pole Relocation", "Leaning Pole"]
+    };
+
+    function updateCategories() {
+      const type = document.getElementById("type").value;
+      const categorySelect = document.getElementById("category");
+      categorySelect.innerHTML = '<option value="">-- Select Category --</option>';
+
+      if (categoryMap[type]) {
+        categoryMap[type].forEach(cat => {
+          const opt = document.createElement("option");
+          opt.value = cat;
+          opt.textContent = cat;
+          categorySelect.appendChild(opt);
+        });
+      }
+    }
+
+    function submitComplaint() {
+      const form = document.getElementById("complaint-form");
+
+      if (!form.checkValidity()) {
+        alert("Please fill all required fields correctly.");
+        return;
+      }
+
+      const consumerNo = document.getElementById("consumer").value;
+      const mobile = document.getElementById("mobile").value;
+
+      if (consumerNo.length !== 13 || isNaN(consumerNo)) {
+        alert("Consumer number must be 13 digits.");
+        return;
+      }
+
+      if (mobile.length !== 10 || isNaN(mobile)) {
+        alert("Mobile number must be 10 digits.");
+        return;
+      }
+
+      const complaintId = "CMP" + Math.floor(100000 + Math.random() * 900000);
+
+      const newComplaint = {
+        id: complaintId,
+        type: document.getElementById("type").value,
+        category: document.getElementById("category").value,
+        contact: document.getElementById("contact").value,
+        landmark: document.getElementById("landmark").value,
+        consumer: consumerNo,
+        description: document.getElementById("description").value,
+        mobile: mobile,
+        address: document.getElementById("address").value
+      };
+
+      const complaints = JSON.parse(localStorage.getItem("complaints") || "[]");
+      complaints.push(newComplaint);
+      localStorage.setItem("complaints", JSON.stringify(complaints));
+
+      document.getElementById("complaint-id").textContent = complaintId;
+      form.style.display = "none";
+      document.getElementById("success-message").style.display = "block";
+      alert("Complaint Registered Successfully!");
+    }
+       document.addEventListener("DOMContentLoaded", () => {
+const user = localStorage.getItem("loggedInUser") || "Guest";
+const nameEl = document.getElementById("username");
+if (nameEl) nameEl.textContent = user;
+});
+  </script>
+</body>
+</html>

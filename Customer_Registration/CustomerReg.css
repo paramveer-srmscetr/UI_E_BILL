@@ -1,0 +1,97 @@
+html, body {
+  margin: 0px;
+  padding: 0px;
+}
+.img {
+    position: absolute;
+    top: 25px;
+    left: 15px;
+}
+
+.img img {
+    height: 120px; /* adjust as needed */
+    width: auto;
+}
+
+
+body {
+  background-image: url('/Images/bg_reg.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  backdrop-filter: blur(2px);
+  font-family: Arial, sans-serif;
+}
+
+#marq{
+    margin-top: 15px;
+    font-weight: 400;
+}
+#box {
+  padding: 30px;
+  border-radius: 20px;
+  max-width: 300px;
+  margin: auto;
+  margin-top: 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+}
+
+input, select {
+  width: 100%;
+  padding: 6px;
+  margin-top: 5px;
+  box-sizing: border-box;
+  border-radius: 15px;
+  border: 1px solid #0e0d0d;
+  
+}
+
+.mobile-row {
+  display: flex;
+  gap: 5px;
+}
+
+.mobile-row select {
+  width: 30%;
+}
+
+.mobile-row input {
+  width: 70%;
+}
+
+.btn {
+  margin-top: 15px;
+  padding: 10px;
+  width: 48%;
+  font-weight: 700;
+
+  border: none;
+  cursor: pointer;
+}
+
+.btn-green {
+  background-color: #08a00e;
+  color: white;
+}
+
+.btn-red {
+  background-color: #e2190a;
+  color: rgb(226, 243, 243);
+}
+
+#ackScreen {
+  display: none;
+  padding: 15px;
+  border: 1px solid #ccc;
+  margin-top: 20px;
+}
+
+.success {
+  color: green;
+  font-weight: bold;
+}

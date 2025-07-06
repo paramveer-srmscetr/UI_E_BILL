@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Customer Home Page</title>
+  <link rel="stylesheet" href="/PayBill/Bill.css">
+</head>
+<script src="/PayBill/Bill.js" ></script>
+<body>
+  <!-- Top Navigation -->
+  <div class="topbar">
+    <div class="menu">
+      <a href="#" onclick="goHome()">Home</a>
+      <a href="/PayBill/PayBill.html" onclick="showPayBill()">Pay Bill</a>
+      <a href="/PayBill/RegisterComplaint.html" onclick="showRegisterComplaint()">Register Complaint</a>
+      <a href="/PayBill/ComplaintStatus.html" onclick="showComplaintStatus()">Complaint Status</a>
+    </div>
+    <div class="right">
+    Welcome <span id="username"></span>
+
+      <button onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <!-- Content Area -->
+  <div class="container">
+    <div id="home-section" class="section">
+      <h2>Welcome to the Electricity Bill Portal</h2>
+      <p>Use the top menu to navigate.</p>
+    </div>
+  </div>
+
+  <script src="Bill.js"></script>
+</body>
+</html>

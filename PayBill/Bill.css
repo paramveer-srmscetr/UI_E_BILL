@@ -1,0 +1,56 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f9f9f9;
+}
+
+.topbar {
+  background-color: #007acc;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menu a {
+  color: white;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.menu a:hover {
+  text-decoration: underline;
+}
+
+.right {
+  font-size: 16px;
+}
+
+button {
+  padding: 5px 10px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.container {
+  padding: 20px;
+}
+
+.section {
+  margin-top: 20px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  background-color: white;
+}
+
+table, th, td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
